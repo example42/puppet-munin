@@ -15,7 +15,7 @@ class munin::spec inherits munin {
   # Note that you can achieve this same result with just:
   # class { "munin": template => "munin/spec.erb" }
 
-  File['munin.conf'] {
+  File['munin-node.conf'] {
     content => template('munin/spec.erb'),
   }
 

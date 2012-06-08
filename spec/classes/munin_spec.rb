@@ -55,7 +55,7 @@ describe 'munin' do
   describe 'Test decommissioning - disable' do
     let(:params) { {:disable => true, :monitor => true , :firewall => true, :port => '42', :protocol => 'tcp'} }
 
-    it { should contain_package('munin').with_ensure('present') }
+    it { should contain_package('munin-node').with_ensure('present') }
     it 'should stop Service[munin-node]' do should contain_service('munin-node').with_ensure('stopped') end
     it 'should not enable at boot Service[munin-node]' do should contain_service('munin-node').with_enable('false') end
     it { should contain_file('munin-node.conf').with_ensure('present') }
@@ -76,7 +76,7 @@ describe 'munin' do
     it { should_not contain_service('munin-node').with_ensure('present') }
     it { should_not contain_service('munin-node').with_ensure('absent') }
     it 'should not enable at boot Service[munin-node]' do should contain_service('munin-node').with_enable('false') end
-    it { should contain_file('munin.conf').with_ensure('present') }
+    it { should contain_file('munin-node.conf').with_ensure('present') }
     it 'should not monitor the process locally' do
       content = catalogue.resource('monitor::process', 'munin_process').send(:parameters)[:enable]
       content.should == false
