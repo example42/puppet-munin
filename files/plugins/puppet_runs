@@ -1,0 +1,59 @@
+#!/usr/bin/ruby
+# Magic markers
+#%# family=auto
+#%# capabilities=autoconf
+
+def config
+  puts <<-END
+graph_title puppet run times
+graph_period second
+graph_vlabel run time in seconds
+run_time.label Configuration run time (seconds)
+graph_category puppet
+END
+  exit 0
+end
+
+def phaselog
+	logfile = ENV['puppet_logfile'] || '/var/log/syslog'
+	run = 0
+	t = Time.now
+	today = t.strftime("^%b %e")
+	hour = t.strftime("^%b %e %H:")
+	m = t.min.to_i
+	last5m = ""
+	6.times do |i|
+		last5m += hour
+		last5m += "0" if (m-i) < 10
+		last5m += (m-i).to_s  
+		last5m += "|" unless i==5
+	end
+	hosts = Array.new
+	regexp = "in (.*) seconds"
+
+	File.open(logfile).grep(/#{today}/).grep(/Finished catalog run/).each do |line|
+    	        if line =~ /#{last5m}/
+	           if line =~ /#{regexp}/
+	             run = $1
+		    end
+		end
+	end
+	puts "run_time.value #{run.to_s}" 
+end
+
+def autoconf
+  if File.readable?('/var/lib/puppet/state/state.yaml')
+    puts "yes"
+  else
+    puts "yes" # For strange reasons munin-node-autoconfigure never meets the above condition. Quick fix sicne we know Puppet is present
+    # puts "no (Missing file /var/lib/puppet/state/state.yaml)"
+  end
+end
+
+if ARGV[0] == 'config'
+  config
+elsif ARGV[0] == 'autoconf'
+  autoconf
+else
+  phaselog
+end 

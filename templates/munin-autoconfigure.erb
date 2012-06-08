@@ -1,0 +1,5 @@
+#!/bin/sh
+# File Managed by Puppet
+
+/bin/rm -f <%= scope.lookupvar('munin::conf_dir_active_plugins') %>* ; /usr/sbin/munin-node-configure --shell 2> /dev/null | /bin/sh 
+/etc/init.d/<%= scope.lookupvar('munin::service') %> reload >/dev/null 2>&1
