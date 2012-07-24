@@ -133,7 +133,7 @@ class munin::params {
   $my_class = ''
   $source = ''
   $source_dir = ''
-  $source_dir_purge = 'false'
+  $source_dir_purge = false
   $template = 'munin/munin-node.conf.erb'
   $options = ''
   $service_autorestart = true

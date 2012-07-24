@@ -469,7 +469,7 @@ class munin (
       notify  => $munin::manage_service_autorestart,
       source  => $munin::source_dir,
       recurse => true,
-      purge   => $munin::source_dir_purge,
+      purge   => $munin::bool_source_dir_purge,
       replace => $munin::manage_file_replace,
       audit   => $munin::manage_audit,
     }
