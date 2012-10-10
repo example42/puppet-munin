@@ -37,7 +37,7 @@ define munin::plugin (
       ensure  => $ensure,
       require => Package['munin-node'],
       notify  => Service['munin-node'],
-      source  => "puppet:///$source",
+      source  => "puppet:///modules/$source",
     }
   }
 
@@ -50,7 +50,7 @@ define munin::plugin (
       ensure  => $ensure,
       require => Package['munin-node'],
       notify  => Service['munin-node'],
-      source  => "puppet:///$source_config",
+      source  => "puppet:///modules/$source_config",
     }
   }
 }
