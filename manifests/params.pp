@@ -51,6 +51,11 @@ class munin::params {
     default => '/usr/share/munin/plugins',
   }
 
+  $restart_or_reload = $::operatingsystem ? {
+    /(?i:Debian)/ => 'restart',
+    default       => 'reload',
+  }
+
   ### Application related parameters
 
   $package = $::operatingsystem ? {
