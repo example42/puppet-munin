@@ -259,6 +259,7 @@ class munin (
   $grouplogic          = params_lookup( 'grouplogic' ),
   $extra_plugins       = params_lookup( 'extra_plugins' ),
   $autoconfigure       = params_lookup( 'autoconfigure' ),
+  $restart_or_reload   = params_lookup( 'restart_or_reload' ),
   $package_perlcidr    = params_lookup( 'package_perlcidr' ),
   $package_server      = params_lookup( 'package_server' ),
   $config_file_server  = params_lookup( 'config_file_server' ),
