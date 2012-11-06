@@ -8,6 +8,11 @@
 #   source_config => 'example42/munin/squid-config',
 # }
 #
+# Define the configuration file of an existing plugin in-line:
+# munin::plugin { 'nginx':
+#   content_config => "[nginx*]\nenv.url http://localhost/nginx_status";
+# }
+#
 # Provide a custom plugin:
 # munin::plugin { 'redis':
 #   source => 'example42/munin/redis',
@@ -19,6 +24,7 @@
 #   source_config => 'example42/munin/redis-conf',
 # }
 #
+
 define munin::plugin (
   $source = '',
   $source_config = '',
@@ -78,7 +84,7 @@ define munin::plugin (
       ensure  => $ensure,
       require => Package['munin-node'],
       notify  => Service['munin-node'],
-      content => $content,
+      content => $content_config,
     }
   }
 }
