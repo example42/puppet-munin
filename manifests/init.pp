@@ -264,6 +264,7 @@ class munin (
   $package_server      = params_lookup( 'package_server' ),
   $config_file_server  = params_lookup( 'config_file_server' ),
   $template_server     = params_lookup( 'template_server' ),
+  $template_host       = params_lookup( 'template_host' ),
   $include_dir         = params_lookup( 'include_dir' ),
   $conf_dir_plugins    = params_lookup( 'conf_dir_plugins' ),
   $conf_dir_active_plugins = params_lookup( 'conf_dir_active_plugins' ),
@@ -483,7 +484,7 @@ class munin (
     mode    => $munin::config_file_mode,
     owner   => $munin::config_file_owner,
     group   => $munin::config_file_group,
-    content => template('munin/host.erb'),
+    content => template($munin::template_host),
     tag     => "munin_host_${munin::magic_tag}",
   }
 

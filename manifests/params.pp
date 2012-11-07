@@ -35,6 +35,7 @@ class munin::params {
 
   $config_file_server = '/etc/munin/munin.conf'
   $template_server = 'munin/munin.conf.erb'
+  $template_host = 'munin/host.erb'
 
   $include_dir = '/etc/munin/munin-conf.d'
 
