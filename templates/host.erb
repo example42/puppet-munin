@@ -1,5 +1,6 @@
 # File Managed by Puppet
 
 [<%= fqdn -%>]
-    address <%= ipaddress -%>
+    address <%= munin::address %>
+    port <%= munin::port %>
     use_node_name yes

@@ -14,6 +14,15 @@
 #   The name of the variable to use as idnetifier of different group of nodes
 #   that should be monitored by the same server.
 #
+# [*interface*]
+#   The ip address of this interface will be used to connect to by the munin
+#   server.
+#   Mutually exclusive with 'ipaddress'.
+#
+# [*ipaddress*]
+#   Hardcodes the ip address that's provided to the munin server.
+#   Mutually exclusive with 'interface'.
+#
 # [*extra_plugins*]
 #   Boolean that defines if you want to add some extra plugins provided
 #   by the module. Default: false
@@ -257,6 +266,8 @@ class munin (
   $server              = params_lookup( 'server' ),
   $server_local        = params_lookup( 'server_local' ),
   $grouplogic          = params_lookup( 'grouplogic' ),
+  $interface           = params_lookup( 'interface' ),
+  $address             = params_lookup( 'address' ),
   $extra_plugins       = params_lookup( 'extra_plugins' ),
   $autoconfigure       = params_lookup( 'autoconfigure' ),
   $restart_or_reload   = params_lookup( 'restart_or_reload' ),
@@ -331,6 +342,12 @@ class munin (
 
   ### Grouping tag
   $magic_tag = get_magicvar($munin::grouplogic)
+
+  ### Munin address
+  $address  = $interface ? {
+    undef   => get_magicvar("ipaddress"),
+    default => get_magicvar("ipaddress_${interface}")
+  }
 
   $manage_package = $munin::bool_absent ? {
     true  => 'absent',
