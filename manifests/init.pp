@@ -343,10 +343,13 @@ class munin (
   ### Grouping tag
   $magic_tag = get_magicvar($munin::grouplogic)
 
-  ### Munin address
-  $address  = $interface ? {
-    undef   => get_magicvar("ipaddress"),
-    default => get_magicvar("ipaddress_${interface}")
+  ### Munin-node address
+  $address_real = $address ? {
+    default => $address,
+    undef   => $interface ? {
+      default => get_magicvar("ipaddress_${interface}"),
+      undef   => get_magicvar("ipaddress")
+    }
   }
 
   $manage_package = $munin::bool_absent ? {
