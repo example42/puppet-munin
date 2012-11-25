@@ -17,9 +17,9 @@
 # [*interface*]
 #   The ip address of this interface will be used to connect to by the munin
 #   server.
-#   Mutually exclusive with 'ipaddress'.
+#   Mutually exclusive with 'address'.
 #
-# [*ipaddress*]
+# [*address*]
 #   Hardcodes the ip address that's provided to the munin server.
 #   Mutually exclusive with 'interface'.
 #
