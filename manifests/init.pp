@@ -14,6 +14,11 @@
 #   The name of the variable to use as idnetifier of different group of nodes
 #   that should be monitored by the same server.
 #
+# [*address*]
+#   The ip address that's provided to the munin server in the Exported 
+#   Resource
+#   Defaults to $ipaddress.
+#
 # [*extra_plugins*]
 #   Boolean that defines if you want to add some extra plugins provided
 #   by the module. Default: false
@@ -257,6 +262,7 @@ class munin (
   $server              = params_lookup( 'server' ),
   $server_local        = params_lookup( 'server_local' ),
   $grouplogic          = params_lookup( 'grouplogic' ),
+  $address             = params_lookup( 'address' ),
   $extra_plugins       = params_lookup( 'extra_plugins' ),
   $autoconfigure       = params_lookup( 'autoconfigure' ),
   $restart_or_reload   = params_lookup( 'restart_or_reload' ),

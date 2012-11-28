@@ -1,5 +1,6 @@
 # File Managed by Puppet
 
 [<%= fqdn -%>]
-    address <%= ipaddress -%>
+    address <%= scope.lookupvar('munin::address') %>
+    port <%= scope.lookupvar('munin::port') %>
     use_node_name yes
