@@ -17,6 +17,7 @@ class munin::params {
   ### Module Specific parameters
   $server = '127.0.0.1'
   $server_local = false
+  $address = $::ipaddress
   $grouplogic = ''
   $extra_plugins = false
   $autoconfigure = true
