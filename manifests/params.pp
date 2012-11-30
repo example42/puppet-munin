@@ -22,7 +22,7 @@ class munin::params {
   $autoconfigure = true
 
   $package_perlcidr = $::operatingsystem ? {
-    /(?i:Centos|Redhat|Scientific)/ => $::operatingsystemrelease ? {
+    /(?i:Centos|Redhat|Scientific|Amazon|Linux)/ => $::operatingsystemrelease ? {
       4        => 'perl-Net-CIDR-Lite',
       default  => 'perl-Net-CIDR',
     },
