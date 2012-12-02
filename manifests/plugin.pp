@@ -32,8 +32,6 @@ define munin::plugin (
   $content_config = '',
   $enable = true ) {
 
-  include munin
-
   $ensure = bool2ensure($enable)
 
   if $source {
