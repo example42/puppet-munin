@@ -21,7 +21,7 @@ class munin::params {
   $grouplogic = ''
   $extra_plugins = false
   $autoconfigure = true
-  $graph_period = "second"
+  $graph_period = 'second'
 
   $package_perlcidr = $::operatingsystem ? {
     /(?i:Centos|Redhat|Scientific|Amazon|Linux)/ => $::operatingsystemrelease ? {
