@@ -23,6 +23,13 @@
 #   Boolean that defines if you want to add some extra plugins provided
 #   by the module. Default: false
 #
+# [*graph_period*]
+#   graph_period is an optional attribute, which control the unit of the data 
+#   that will be displayed with in the graphs. The default is per second. 
+#   Changing to per minute is useful in cases of a low frequency of whatever 
+#   the plugin is measuring. 
+#   Allowed: second (the default), minute or hour
+#
 # [*autoconfigure*]
 #   Boolean that defines if you want to autoconfigure plugins: Default: true
 #   If true a nightly cron jobs re-runs the munin autoconfigure script
