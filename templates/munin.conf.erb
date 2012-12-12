@@ -8,7 +8,7 @@ tmpldir	/etc/munin/templates
 
 includedir <%= scope.lookupvar('munin::include_dir') %> 
 
-graph_period minute
+graph_period <%= scope.lookupvar('munin::graph_period') %>
 #munin_cgi_graph_jobs 6
 max_graph_jobs 15
 
