@@ -130,6 +130,12 @@ class munin::params {
     default => '/var/log/munin',
   }
 
+  # Munin EPEL package has changed the path of munin-node log
+  # to /var/log/munin-node/munin-node.log from version 2.0.9-3 (sigh)
+  # The previous default is kept here. You may override it with:
+  # class { 'munin':
+  #   log_file => '/var/log/munin-node/munin-node.log',
+  # }
   $log_file = $::operatingsystem ? {
     default => '/var/log/munin/munin.log',
   }

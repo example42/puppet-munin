@@ -1,7 +1,7 @@
 # File Managed by Puppet
 
 log_level 4
-log_file /var/log/munin/munin-node.log
+log_file <%= scope.lookupvar('munin::log_file') %> 
 pid_file <%= scope.lookupvar('munin::pid_file') %>
 
 background 1
