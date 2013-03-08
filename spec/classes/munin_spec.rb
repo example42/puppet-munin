@@ -126,11 +126,8 @@ describe 'munin' do
     end
   end
 
-  describe 'Test service autorestart', :broken => true do
-    it 'should automatically restart the service, by default' do
-      content = catalogue.resource('file', 'munin-node.conf').send(:parameters)[:notify]
-      content.should == 'Service[munin-node]{:name=>"munin-node"}'
-    end
+  describe 'Test service autorestart' do
+    it { should contain_file('munin-node.conf').with_notify('Service[munin-node]') }
   end
 
   describe 'Test service autorestart' do
