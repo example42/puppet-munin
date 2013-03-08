@@ -341,6 +341,13 @@ class munin (
   $bool_audit_only=any2bool($audit_only)
 
   ### Definition of some variables used in the module
+  $array_servers = is_array($munin::server) ? {
+    false     => $munin::server ? {
+      ''      => [],
+      default => split($munin::server, ','),
+    },
+    default   => $munin::server,
+  }
 
   ### Grouping tag
   $magic_tag = get_magicvar($munin::grouplogic)
@@ -415,6 +422,7 @@ class munin (
   }
 
   ### Munin specifics
+
   if $munin::bool_server_local == true 
   or $munin::server == "$::ipaddress" {
     include munin::server
