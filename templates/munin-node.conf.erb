@@ -1,7 +1,7 @@
 # File Managed by Puppet
 
 log_level 4
-log_file <%= scope.lookupvar('munin::log_file') %> 
+log_file <%= scope.lookupvar('munin::log_file') %>
 pid_file <%= scope.lookupvar('munin::pid_file') %>
 
 background 1
@@ -13,7 +13,7 @@ group root
 # Regexps for files to ignore
 ignore_file ~$
 #ignore_file [#~]$  # FIX doesn't work. '#' starts a comment
-ignore_file DEADJOE$ 
+ignore_file DEADJOE$
 ignore_file \.bak$
 ignore_file %$
 ignore_file \.dpkg-(tmp|new|old|dist)$
@@ -22,7 +22,7 @@ ignore_file \.pod$
 
 # Set this if the client doesn't report the correct hostname when
 # telnetting to localhost, port 4949
-<% if scope.lookupvar('fqdn').length > 0 -%>
+<% if @fqdn -%>
 host_name <%= fqdn -%>
 <% else -%>
 host_name <%= hostname -%>
