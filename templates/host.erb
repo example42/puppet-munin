@@ -1,6 +1,10 @@
 # File Managed by Puppet
 
+<% if @fqdn -%>
 [<%= fqdn -%>]
+<% else -%>
+[<%= hostname -%>]
+<% end -%>
     address <%= scope.lookupvar('munin::address') %>
     port <%= scope.lookupvar('munin::port') %>
     use_node_name yes
