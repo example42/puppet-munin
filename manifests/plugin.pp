@@ -28,6 +28,7 @@
 define munin::plugin (
   $source = '',
   $source_config = '',
+  $linkplugins = '',
   $content = '',
   $content_config = '',
   $enable = true ) {
@@ -45,6 +46,13 @@ define munin::plugin (
       notify  => Service['munin-node'],
       source  => "puppet:///modules/$source",
     }
+	if $linkplugins == true {
+      file  { "/etc/munin/plugins/${name}":
+            ensure => link,
+            target => "${munin::plugins_dir}/${name}",
+        	}
+    }
+
   }
 
   if $content {
@@ -57,6 +65,12 @@ define munin::plugin (
       require => Package['munin-node'],
       notify  => Service['munin-node'],
       content => $content,
+    }
+	if $linkplugins == true {
+      file  { "/etc/munin/plugins/${name}":
+            ensure => link,
+            target => "${munin::plugins_dir}/${name}",
+        	}
     }
   }
 
