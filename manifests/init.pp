@@ -23,6 +23,12 @@
 #   Boolean that defines if you want to add some extra plugins provided
 #   by the module. Default: false
 #
+# [*graph_strategy*]
+#   graph_strategy denotes whether the graphs are created every five minutes from cron
+#   or on demand when loading the webpage with a CGI script. Please note that you have
+#   to configure the web server separately.
+#   Allowed: cron (the default) or cgi
+#
 # [*graph_period*]
 #   graph_period is an optional attribute, which control the unit of the data 
 #   that will be displayed with in the graphs. The default is per second. 
@@ -271,6 +277,8 @@ class munin (
   $grouplogic          = params_lookup( 'grouplogic' ),
   $address             = params_lookup( 'address' ),
   $extra_plugins       = params_lookup( 'extra_plugins' ),
+  $graph_strategy      = params_lookup( 'graph_strategy' ),
+  $graph_period        = params_lookup( 'graph_period' ),
   $autoconfigure       = params_lookup( 'autoconfigure' ),
   $restart_or_reload   = params_lookup( 'restart_or_reload' ),
   $package_perlcidr    = params_lookup( 'package_perlcidr' ),

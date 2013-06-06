@@ -9,6 +9,7 @@ tmpldir	/etc/munin/templates
 includedir <%= scope.lookupvar('munin::include_dir') %> 
 
 graph_period <%= scope.lookupvar('munin::graph_period') %>
+graph_strategy <%= scope.lookupvar('munin::graph_strategy') %>
 #munin_cgi_graph_jobs 6
 max_graph_jobs 15
 

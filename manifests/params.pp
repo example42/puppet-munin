@@ -21,6 +21,7 @@ class munin::params {
   $grouplogic = ''
   $extra_plugins = false
   $autoconfigure = true
+  $graph_strategy = 'cron'
   $graph_period = 'second'
 
   $package_perlcidr = $::operatingsystem ? {
