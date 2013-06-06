@@ -24,7 +24,6 @@
 #   source_config => 'example42/munin/redis-conf',
 # }
 #
-
 define munin::plugin (
   $source = '',
   $source_config = '',

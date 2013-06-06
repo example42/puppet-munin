@@ -2,7 +2,7 @@
 #
 # This is the main munin class
 #
-# == Moudle specific parameters
+# == Module specific parameters
 #
 # [*server*]
 #   Ip of Munin server
@@ -11,7 +11,7 @@
 #   If the local host is a Munin server
 #
 # [*grouplogic*]
-#   The name of the variable to use as idnetifier of different group of nodes
+#   The name of the variable to use as identifier of different group of nodes
 #   that should be monitored by the same server.
 #
 # [*address*]
@@ -42,7 +42,7 @@
 #   Name of the Munin server package
 #
 # [*config_file_server*]
-#   Path of the server's configursstion file
+#   Path of the server's configuration file
 #
 # [*template_server*]
 #   Custom template to use for the server configuration file
@@ -54,7 +54,7 @@
 #   Directory with extra plugins configurations
 #
 # [*web_dir*]
-#   Directory where Munin graphs are stored for Web pubblication
+#   Directory where Munin graphs are stored for Web publication
 #
 # [*conf_dir_active_plugins*]
 #   Directory containing the links to the active Plugins
@@ -257,7 +257,7 @@
 #
 # You can use this class in 2 ways:
 # - Set variables (at top scope level on in a ENC) and "include munin"
-# - Call munin as a parametrized class
+# - Call munin as a parameterized class
 #
 # See README for details.
 #
