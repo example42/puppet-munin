@@ -2,7 +2,7 @@
 #
 # This is the main munin class
 #
-# == Moudle specific parameters
+# == Module specific parameters
 #
 # [*server*]
 #   Ip of Munin server
@@ -10,8 +10,11 @@
 # [*server_local*]
 #   If the local host is a Munin server
 #
+# [*folder*]
+#   Specify a "folder" or group of servers to display in the munin web interface
+#
 # [*grouplogic*]
-#   The name of the variable to use as idnetifier of different group of nodes
+#   The name of the variable to use as identifier of different group of nodes
 #   that should be monitored by the same server.
 #
 # [*address*]
@@ -22,6 +25,12 @@
 # [*extra_plugins*]
 #   Boolean that defines if you want to add some extra plugins provided
 #   by the module. Default: false
+#
+# [*graph_strategy*]
+#   graph_strategy denotes whether the graphs are created every five minutes from cron
+#   or on demand when loading the webpage with a CGI script. Please note that you have
+#   to configure the web server separately.
+#   Allowed: cron (the default) or cgi
 #
 # [*graph_period*]
 #   graph_period is an optional attribute, which control the unit of the data 
@@ -42,19 +51,22 @@
 #   Name of the Munin server package
 #
 # [*config_file_server*]
-#   Path of the server's configursstion file
+#   Path of the server's configuration file
 #
 # [*template_server*]
 #   Custom template to use for the server configuration file
 #
 # [*include_dir*]
-#   Directory that includes extra configuration files
+#   Directory that includes extra configuration files. For example the exported host configurations land here.
+#
+# [*include_dir_purge*]
+#   Boolean to indicate that only puppet-managed extra configuration files should be accepted. Default: false.
 #
 # [*conf_dir_plugins*]
 #   Directory with extra plugins configurations
 #
 # [*web_dir*]
-#   Directory where Munin graphs are stored for Web pubblication
+#   Directory where Munin graphs are stored for Web publication
 #
 # [*conf_dir_active_plugins*]
 #   Directory containing the links to the active Plugins
@@ -257,7 +269,7 @@
 #
 # You can use this class in 2 ways:
 # - Set variables (at top scope level on in a ENC) and "include munin"
-# - Call munin as a parametrized class
+# - Call munin as a parameterized class
 #
 # See README for details.
 #
@@ -268,9 +280,12 @@
 class munin (
   $server              = params_lookup( 'server' ),
   $server_local        = params_lookup( 'server_local' ),
+  $folder              = params_lookup( 'folder' ),
   $grouplogic          = params_lookup( 'grouplogic' ),
   $address             = params_lookup( 'address' ),
   $extra_plugins       = params_lookup( 'extra_plugins' ),
+  $graph_strategy      = params_lookup( 'graph_strategy' ),
+  $graph_period        = params_lookup( 'graph_period' ),
   $autoconfigure       = params_lookup( 'autoconfigure' ),
   $restart_or_reload   = params_lookup( 'restart_or_reload' ),
   $package_perlcidr    = params_lookup( 'package_perlcidr' ),
@@ -279,6 +294,7 @@ class munin (
   $template_server     = params_lookup( 'template_server' ),
   $template_host       = params_lookup( 'template_host' ),
   $include_dir         = params_lookup( 'include_dir' ),
+  $include_dir_purge   = params_lookup( 'include_dir_purge' ),
   $conf_dir_plugins    = params_lookup( 'conf_dir_plugins' ),
   $conf_dir_active_plugins = params_lookup( 'conf_dir_active_plugins' ),
   $web_dir             = params_lookup( 'web_dir' ),
@@ -330,6 +346,7 @@ class munin (
   $bool_autoconfigure=any2bool($autoconfigure)
 
   $bool_source_dir_purge=any2bool($source_dir_purge)
+  $bool_include_dir_purge=any2bool($include_dir_purge)
   $bool_service_autorestart=any2bool($service_autorestart)
   $bool_absent=any2bool($absent)
   $bool_disable=any2bool($disable)
@@ -347,6 +364,12 @@ class munin (
       default => split($munin::server, ','),
     },
     default   => $munin::server,
+  }
+
+  ### Prepare folder for use in template
+  $folder_prefix = $munin::folder ? {
+    ''      => '',
+    default => "${munin::folder};",
   }
 
   ### Grouping tag
