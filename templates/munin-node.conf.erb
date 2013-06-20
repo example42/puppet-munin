@@ -39,7 +39,7 @@ host_name <%= @hostname %>
 <% end %>
 
 # Which address to bind to;
-host *
+host <%= scope.lookupvar('munin::address') || '*' %>
 # host 127.0.0.1
 
 # And which port
