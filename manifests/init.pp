@@ -10,6 +10,9 @@
 # [*server_local*]
 #   If the local host is a Munin server
 #
+# [*folder*]
+#   Specify a "folder" or group of servers to display in the munin web interface
+#
 # [*grouplogic*]
 #   The name of the variable to use as identifier of different group of nodes
 #   that should be monitored by the same server.
@@ -274,6 +277,7 @@
 class munin (
   $server              = params_lookup( 'server' ),
   $server_local        = params_lookup( 'server_local' ),
+  $folder              = params_lookup( 'folder' ),
   $grouplogic          = params_lookup( 'grouplogic' ),
   $address             = params_lookup( 'address' ),
   $extra_plugins       = params_lookup( 'extra_plugins' ),
@@ -355,6 +359,12 @@ class munin (
       default => split($munin::server, ','),
     },
     default   => $munin::server,
+  }
+
+  ### Prepare folder for use in template
+  $folder_prefix = $munin::folder ? {
+    ''      => '',
+    default => "${munin::folder};",
   }
 
   ### Grouping tag
