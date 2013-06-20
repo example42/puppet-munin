@@ -35,6 +35,16 @@ class munin::server inherits munin {
     require => Package['munin_server'],
   }
 
+  if $munin::bool_include_dir_purge {
+    File ['munin.include_dir_server'] {
+      source => 'puppet:///modules/munin/empty',
+      ignore => ['.gitkeep'],
+      recurse => true,
+      purge => true,
+      force => true,
+    }
+  }
+
   # Collects all the munin clients configs
   File <<| tag == "munin_host_${munin::magic_tag}" |>>
 

@@ -57,7 +57,10 @@
 #   Custom template to use for the server configuration file
 #
 # [*include_dir*]
-#   Directory that includes extra configuration files
+#   Directory that includes extra configuration files. For example the exported host configurations land here.
+#
+# [*include_dir_purge*]
+#   Boolean to indicate that only puppet-managed extra configuration files should be accepted. Default: false.
 #
 # [*conf_dir_plugins*]
 #   Directory with extra plugins configurations
@@ -291,6 +294,7 @@ class munin (
   $template_server     = params_lookup( 'template_server' ),
   $template_host       = params_lookup( 'template_host' ),
   $include_dir         = params_lookup( 'include_dir' ),
+  $include_dir_purge   = params_lookup( 'include_dir_purge' ),
   $conf_dir_plugins    = params_lookup( 'conf_dir_plugins' ),
   $conf_dir_active_plugins = params_lookup( 'conf_dir_active_plugins' ),
   $web_dir             = params_lookup( 'web_dir' ),
@@ -342,6 +346,7 @@ class munin (
   $bool_autoconfigure=any2bool($autoconfigure)
 
   $bool_source_dir_purge=any2bool($source_dir_purge)
+  $bool_include_dir_purge=any2bool($include_dir_purge)
   $bool_service_autorestart=any2bool($service_autorestart)
   $bool_absent=any2bool($absent)
   $bool_disable=any2bool($disable)

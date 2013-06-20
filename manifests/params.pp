@@ -42,6 +42,7 @@ class munin::params {
   $template_host = 'munin/host.erb'
 
   $include_dir = '/etc/munin/munin-conf.d'
+  $include_dir_purge = false
 
   $conf_dir_plugins = '/etc/munin/plugin-conf.d'
 
