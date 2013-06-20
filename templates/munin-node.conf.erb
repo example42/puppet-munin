@@ -23,9 +23,9 @@ ignore_file \.pod$
 # Set this if the client doesn't report the correct hostname when
 # telnetting to localhost, port 4949
 <% if @fqdn -%>
-host_name <%= fqdn -%>
+host_name <%= @fqdn %>
 <% else -%>
-host_name <%= hostname -%>
+host_name <%= @hostname %>
 <% end -%>
 
 # A list of addresses that are allowed to connect.  This must be a
@@ -39,7 +39,7 @@ host_name <%= hostname -%>
 <% end %>
 
 # Which address to bind to;
-host *
+host <%= scope.lookupvar('munin::address') || '*' %>
 # host 127.0.0.1
 
 # And which port

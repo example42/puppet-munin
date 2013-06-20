@@ -18,9 +18,11 @@ class munin::params {
   $server = '127.0.0.1'
   $server_local = false
   $address = $::ipaddress
+  $folder = ''
   $grouplogic = ''
   $extra_plugins = false
   $autoconfigure = true
+  $graph_strategy = 'cron'
   $graph_period = 'second'
 
   $package_perlcidr = $::operatingsystem ? {
@@ -40,6 +42,7 @@ class munin::params {
   $template_host = 'munin/host.erb'
 
   $include_dir = '/etc/munin/munin-conf.d'
+  $include_dir_purge = false
 
   $conf_dir_plugins = '/etc/munin/plugin-conf.d'
 
@@ -141,6 +144,15 @@ class munin::params {
     /(?i:RedHat|Centos|Scientific|Fedora|Amazon|Linux)/ => '/var/log/munin-node/munin-node.log',
     default                                             => '/var/log/munin/munin.log',
   }
+
+  $fcgi_runlevels = '2345'
+
+  $fcgi_command = $::operatingsystem ? {
+    /(?i:Ubuntu|Debian|Mint)/ => "/usr/bin/spawn-fcgi -n -s /var/run/munin/fcgi-graph.sock -U www-data -u www-data -g www-data /usr/lib/munin/cgi/munin-cgi-graph",
+    default                   => "/usr/bin/spawn-fcgi -n -s /var/run/munin/fcgi-graph.sock -U www-data -u www-data -g www-data munin-fastcgi-graph",
+  }
+
+  $fcgi_reload_init = true
 
   $port = '4949'
   $protocol = 'tcp'

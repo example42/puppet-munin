@@ -17,7 +17,7 @@ END
 end
 
 # reports how many clients compiled in the last 5 minutes
-# repotrs how many unique clients compiled since the begining of the day
+# reports how many unique clients compiled since the beginning of the day
 # report the average compilation time for all clients in the last 5 minutes.
 def phaselog
 	logfile = ENV['puppet_logfile'] || '/var/log/syslog'
