@@ -22,6 +22,7 @@ class munin::params {
   $grouplogic = ''
   $extra_plugins = false
   $autoconfigure = true
+  $autoconfigure_template = 'munin/munin-autoconfigure.erb'
   $graph_strategy = 'cron'
   $graph_period = 'second'
 

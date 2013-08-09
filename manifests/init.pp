@@ -287,6 +287,7 @@ class munin (
   $graph_strategy      = params_lookup( 'graph_strategy' ),
   $graph_period        = params_lookup( 'graph_period' ),
   $autoconfigure       = params_lookup( 'autoconfigure' ),
+  $autoconfigure_template = params_lookup( 'autoconfigure_template' ),
   $restart_or_reload   = params_lookup( 'restart_or_reload' ),
   $package_perlcidr    = params_lookup( 'package_perlcidr' ),
   $package_server      = params_lookup( 'package_server' ),
@@ -463,7 +464,7 @@ class munin (
       owner   => 'root',
       group   => 'root',
       require => Package['munin-node'],
-      content => template('munin/munin-autoconfigure.erb'),
+      content => template("${munin::autoconfigure_template}"),
       replace => $munin::manage_file_replace,
       audit   => $munin::manage_audit,
     }
