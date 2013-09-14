@@ -14,7 +14,7 @@ class munin::cgi (
     package { 'spawn-fcgi': ensure => $munin::manage_file; }
   }
 
-  inittab { "mufc": # MUnin Fast Cgi
+  inittab { 'mufc': # MUnin Fast Cgi
     ensure   => $munin::manage_file,
     runlevel => $munin::cgi::fcgi_runlevels,
     action   => 'respawn',

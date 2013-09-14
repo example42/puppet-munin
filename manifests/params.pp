@@ -149,8 +149,8 @@ class munin::params {
   $fcgi_runlevels = '2345'
 
   $fcgi_command = $::operatingsystem ? {
-    /(?i:Ubuntu|Debian|Mint)/ => "/usr/bin/spawn-fcgi -n -s /var/run/munin/fcgi-graph.sock -U www-data -u www-data -g www-data /usr/lib/munin/cgi/munin-cgi-graph",
-    default                   => "/usr/bin/spawn-fcgi -n -s /var/run/munin/fcgi-graph.sock -U www-data -u www-data -g www-data munin-fastcgi-graph",
+    /(?i:Ubuntu|Debian|Mint)/ => '/usr/bin/spawn-fcgi -n -s /var/run/munin/fcgi-graph.sock -U www-data -u www-data -g www-data /usr/lib/munin/cgi/munin-cgi-graph',
+    default                   => '/usr/bin/spawn-fcgi -n -s /var/run/munin/fcgi-graph.sock -U www-data -u www-data -g www-data munin-fastcgi-graph',
   }
 
   $fcgi_reload_init = true

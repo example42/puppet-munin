@@ -1,11 +1,12 @@
 #
 # Class: munin::server
 #
-# Installs Munin Grapher/Gatherer 
+# Installs Munin Grapher/Gatherer
 #
 # Usage:
 # include munin::server
-# Autoloads munin::server (The Munin grapher/gatherer) if $munin_server_local is true or $munin_server is equal to $ipaddress
+# Autoloads munin::server (The Munin grapher/gatherer)
+# if $munin_server_local is true or $munin_server is equal to $ipaddress
 #
 class munin::server inherits munin {
 
@@ -21,7 +22,7 @@ class munin::server inherits munin {
     owner   => $munin::config_file_owner,
     group   => $munin::config_file_group,
     require => Package['munin_server'],
-    content => template("${munin::template_server}"),
+    content => template($munin::template_server),
     replace => $munin::manage_file_replace,
     audit   => $munin::manage_audit,
   }

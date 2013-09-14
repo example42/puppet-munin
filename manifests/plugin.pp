@@ -25,74 +25,75 @@
 # }
 #
 define munin::plugin (
-  $source = '',
-  $source_config = '',
-  $linkplugins = '',
-  $content = '',
+  $source         = '',
+  $source_config  = '',
+  $linkplugins    = '',
+  $content        = '',
   $content_config = '',
-  $enable = true ) {
+  $enable         = true ) {
 
   $ensure = bool2ensure($enable)
 
   if $source {
     file { "Munin_plugin_${name}":
+      ensure  => $ensure,
       path    => "${munin::plugins_dir}/${name}",
       owner   => root,
       group   => root,
       mode    => '0755',
-      ensure  => $ensure,
       require => Package['munin-node'],
       notify  => Service['munin-node'],
-      source  => "puppet:///modules/$source",
-    }
-	if $linkplugins == true {
-      file  { "/etc/munin/plugins/${name}":
-            ensure => link,
-            target => "${munin::plugins_dir}/${name}",
-        	}
+      source  => "puppet:///modules/${source}",
     }
 
+    if $linkplugins == true {
+      file  { "/etc/munin/plugins/${name}":
+        ensure => link,
+        target => "${munin::plugins_dir}/${name}",
+      }
+    }
   }
 
   if $content {
     file { "Munin_plugin_${name}":
+      ensure  => $ensure,
       path    => "${munin::plugins_dir}/${name}",
       owner   => root,
       group   => root,
       mode    => '0755',
-      ensure  => $ensure,
       require => Package['munin-node'],
       notify  => Service['munin-node'],
       content => $content,
     }
-	if $linkplugins == true {
+
+    if $linkplugins == true {
       file  { "/etc/munin/plugins/${name}":
-            ensure => link,
-            target => "${munin::plugins_dir}/${name}",
-        	}
+        ensure => link,
+        target => "${munin::plugins_dir}/${name}",
+      }
     }
   }
 
   if $source_config {
     file { "Munin_plugin_conf_${name}":
+      ensure  => $ensure,
       path    => "${munin::conf_dir_plugins}/${name}",
       owner   => root,
       group   => root,
       mode    => '0644',
-      ensure  => $ensure,
       require => Package['munin-node'],
       notify  => Service['munin-node'],
-      source  => "puppet:///modules/$source_config",
+      source  => "puppet:///modules/${source_config}",
     }
   }
 
   if $content_config {
     file { "Munin_plugin_conf_${name}":
+      ensure  => $ensure,
       path    => "${munin::conf_dir_plugins}/${name}",
       owner   => root,
       group   => root,
       mode    => '0644',
-      ensure  => $ensure,
       require => Package['munin-node'],
       notify  => Service['munin-node'],
       content => $content_config,

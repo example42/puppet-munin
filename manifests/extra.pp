@@ -1,5 +1,5 @@
 # class munin::extra
-# 
+#
 # This class provides some custom extra munin-plugins
 # To use it just include it, or copy and paste parts of it
 # in your manifests

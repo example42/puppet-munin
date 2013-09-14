@@ -18,7 +18,7 @@
 #   that should be monitored by the same server.
 #
 # [*address*]
-#   The ip address that's provided to the munin server in the Exported 
+#   The ip address that's provided to the munin server in the Exported
 #   Resource
 #   Defaults to $ipaddress.
 #
@@ -33,10 +33,10 @@
 #   Allowed: cron (the default) or cgi
 #
 # [*graph_period*]
-#   graph_period is an optional attribute, which control the unit of the data 
-#   that will be displayed with in the graphs. The default is per second. 
-#   Changing to per minute is useful in cases of a low frequency of whatever 
-#   the plugin is measuring. 
+#   graph_period is an optional attribute, which control the unit of the data
+#   that will be displayed with in the graphs. The default is per second.
+#   Changing to per minute is useful in cases of a low frequency of whatever
+#   the plugin is measuring.
 #   Allowed: second (the default), minute or hour
 #
 # [*autoconfigure*]
@@ -447,8 +447,8 @@ class munin (
 
   ### Munin specifics
 
-  if $munin::bool_server_local == true 
-  or $munin::server == "$::ipaddress" {
+  if $munin::bool_server_local == true
+  or $munin::server == $::ipaddress {
     include munin::server
   }
 
@@ -464,7 +464,7 @@ class munin (
       owner   => 'root',
       group   => 'root',
       require => Package['munin-node'],
-      content => template("${munin::autoconfigure_template}"),
+      content => template($munin::autoconfigure_template),
       replace => $munin::manage_file_replace,
       audit   => $munin::manage_audit,
     }
@@ -523,9 +523,9 @@ class munin (
   }
 
   # Exported Resource for Server automatic configuration
-  @@file { "${munin::include_dir}/${fqdn}.conf":
+  @@file { "${munin::include_dir}/${::fqdn}.conf":
     ensure  => $munin::manage_file,
-    path    => "${munin::include_dir}/${fqdn}.conf",
+    path    => "${munin::include_dir}/${::fqdn}.conf",
     mode    => $munin::config_file_mode,
     owner   => $munin::config_file_owner,
     group   => $munin::config_file_group,
