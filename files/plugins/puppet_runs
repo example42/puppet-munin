@@ -45,7 +45,7 @@ def autoconf
   if File.readable?('/var/lib/puppet/state/state.yaml')
     puts "yes"
   else
-    puts "yes" # For strange reasons munin-node-autoconfigure never meets the above condition. Quick fix since we know Puppet is present
+    puts "yes" # For strange reasons munin-node-autoconfigure never meets the above condition. Quick fix since we know Puppet is present
     # puts "no (Missing file /var/lib/puppet/state/state.yaml)"
   end
 end

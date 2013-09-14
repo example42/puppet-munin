@@ -445,7 +445,7 @@ class munin (
     default   => template($munin::template),
   }
 
-  ### Munin specifics
+  ### Munin specifics
 
   if $munin::bool_server_local == true 
   or $munin::server == "$::ipaddress" {
@@ -522,7 +522,7 @@ class munin (
     }
   }
 
-  # Exported Resource for Server automatic configuration
+  # Exported Resource for Server automatic configuration
   @@file { "${munin::include_dir}/${fqdn}.conf":
     ensure  => $munin::manage_file,
     path    => "${munin::include_dir}/${fqdn}.conf",
