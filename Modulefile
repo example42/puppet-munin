@@ -11,4 +11,3 @@ Monitor and firewall dependencies are needed only if the relevant features are e
 dependency 'example42/puppi', '>=2.0.0'
 dependency 'example42/firewall', '>=2.0.0'
 dependency 'example42/monitor', '>=2.0.0'
-dependency 'jfryman/inittab', '>=1.0.0'
