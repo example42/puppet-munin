@@ -10,5 +10,3 @@ description 'This module installs and manages munin. Check README.rdoc for detai
 Monitor and firewall dependencies are needed only if the relevant features are enabled'
 dependency 'example42/puppi', '>=2.0.0'
 dependency 'puppetlabs/stdlib', '>=2.0.0'
-dependency 'example42/firewall', '>=2.0.0'
-dependency 'example42/monitor', '>=2.0.0'
