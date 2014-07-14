@@ -1,10 +1,9 @@
-require "#{File.join(File.dirname(__FILE__),'..','spec_helper.rb')}"
+require 'spec_helper.rb'
 
-describe 'munin' do
-
+describe 'munin', :type => :class do
   let(:title) { 'munin' }
   let(:node) { 'rspec.example42.com' }
-  let(:facts) { { :ipaddress => '10.42.42.42' } }
+  let(:facts) { { :ipaddress => '10.42.42.42', :concat_basedir => '/dne' } }
 
   describe 'Test standard installation' do
     it { should contain_package('munin-node').with_ensure('present') }
@@ -26,12 +25,14 @@ describe 'munin' do
     it { should contain_service('munin-node').with_enable('true') }
     it { should contain_file('munin-node.conf').with_ensure('present') }
     it 'should monitor the process' do
-      content = catalogue.resource('monitor::process', 'munin_process').send(:parameters)[:enable]
-      content.should == true
+      should contain_monitor__process('munin_process').with(
+        'enable' => 'true'
+      )
     end
     it 'should place a firewall rule' do
-      content = catalogue.resource('firewall', 'munin_tcp_42').send(:parameters)[:enable]
-      content.should == true
+      should contain_firewall('munin_tcp_42').with(
+        'enable' => 'true'
+      )
     end
   end
 
@@ -43,12 +44,14 @@ describe 'munin' do
     it 'should not enable at boot Service[munin-node]' do should contain_service('munin-node').with_enable('false') end
     it 'should remove munin configuration file' do should contain_file('munin-node.conf').with_ensure('absent') end
     it 'should not monitor the process' do
-      content = catalogue.resource('monitor::process', 'munin_process').send(:parameters)[:enable]
-      content.should == false
+      should contain_monitor__process('munin_process').with(
+        'enable' => 'false'
+      )
     end
     it 'should remove a firewall rule' do
-      content = catalogue.resource('firewall', 'munin_tcp_42').send(:parameters)[:enable]
-      content.should == false
+      should contain_firewall('munin_tcp_42').with(
+        'enable' => 'false'
+      )
     end
   end
 
@@ -60,12 +63,14 @@ describe 'munin' do
     it 'should not enable at boot Service[munin-node]' do should contain_service('munin-node').with_enable('false') end
     it { should contain_file('munin-node.conf').with_ensure('present') }
     it 'should not monitor the process' do
-      content = catalogue.resource('monitor::process', 'munin_process').send(:parameters)[:enable]
-      content.should == false
+      should contain_monitor__process('munin_process').with(
+        'enable' => 'false'
+      )
     end
     it 'should remove a firewall rule' do
-      content = catalogue.resource('firewall', 'munin_tcp_42').send(:parameters)[:enable]
-      content.should == false
+      should contain_firewall('munin_tcp_42').with(
+        'enable' => 'false'
+      )
     end
   end
 
@@ -78,12 +83,14 @@ describe 'munin' do
     it 'should not enable at boot Service[munin-node]' do should contain_service('munin-node').with_enable('false') end
     it { should contain_file('munin-node.conf').with_ensure('present') }
     it 'should not monitor the process locally' do
-      content = catalogue.resource('monitor::process', 'munin_process').send(:parameters)[:enable]
-      content.should == false
+      should contain_monitor__process('munin_process').with(
+        'enable' => 'false'
+      )
     end
     it 'should keep a firewall rule' do
-      content = catalogue.resource('firewall', 'munin_tcp_42').send(:parameters)[:enable]
-      content.should == true
+      should contain_firewall('munin_tcp_42').with(
+        'enable' => 'true'
+      )
     end
   end 
 
@@ -91,38 +98,33 @@ describe 'munin' do
     let(:params) { {:template => "munin/spec.erb" , :options => { 'opt_a' => 'value_a' } } }
 
     it 'should generate a valid template' do
-      content = catalogue.resource('file', 'munin-node.conf').send(:parameters)[:content]
-      content.should match "fqdn: rspec.example42.com"
+      should contain_file('munin-node.conf').with_content %r{fqdn: rspec.example42.com}
     end
     it 'should generate a template that uses custom options' do
-      content = catalogue.resource('file', 'munin-node.conf').send(:parameters)[:content]
-      content.should match "value_a"
+      should contain_file('munin-node.conf').with_content %r{value_a}
     end
-
   end
 
   describe 'Test customizations - source' do
     let(:params) { {:source => "puppet://modules/munin/spec" , :source_dir => "puppet://modules/munin/dir/spec" , :source_dir_purge => true } }
 
     it 'should request a valid source ' do
-      content = catalogue.resource('file', 'munin-node.conf').send(:parameters)[:source]
-      content.should == "puppet://modules/munin/spec"
+      should contain_file('munin-node.conf').with(
+        'source' => "puppet://modules/munin/spec"
+      )
     end
-    it 'should request a valid source dir' do
-      content = catalogue.resource('file', 'munin.dir').send(:parameters)[:source]
-      content.should == "puppet://modules/munin/dir/spec"
-    end
-    it 'should purge source dir if source_dir_purge is true' do
-      content = catalogue.resource('file', 'munin.dir').send(:parameters)[:purge]
-      content.should == true
+    it 'should request a valid source dir and purge it' do
+      should contain_file('munin.dir').with(
+        'source' => "puppet://modules/munin/dir/spec",
+        'purge'  => 'true'
+      )
     end
   end
 
   describe 'Test customizations - custom class' do
     let(:params) { {:my_class => "munin::spec" } }
     it 'should automatically include a custom class' do
-      content = catalogue.resource('file', 'munin-node.conf').send(:parameters)[:content]
-      content.should match "fqdn: rspec.example42.com"
+      should contain_class('munin::spec')
     end
   end
 
@@ -134,8 +136,9 @@ describe 'munin' do
     let(:params) { {:service_autorestart => "no" } }
 
     it 'should not automatically restart the service, when service_autorestart => false' do
-      content = catalogue.resource('file', 'munin-node.conf').send(:parameters)[:notify]
-      content.should be_nil
+      should contain_file('munin-node.conf').with(
+	'notify' => nil
+      )
     end
   end
 
@@ -143,8 +146,9 @@ describe 'munin' do
     let(:params) { {:puppi => true, :puppi_helper => "myhelper"} }
 
     it 'should generate a puppi::ze define' do
-      content = catalogue.resource('puppi::ze', 'munin').send(:parameters)[:helper]
-      content.should == "myhelper"
+      should contain_puppi__ze('munin').with(
+        'helper' => 'myhelper'
+      )
     end
   end
 
@@ -152,8 +156,9 @@ describe 'munin' do
     let(:params) { {:monitor => true, :monitor_tool => "puppi" } }
 
     it 'should generate monitor defines' do
-      content = catalogue.resource('monitor::process', 'munin_process').send(:parameters)[:tool]
-      content.should == "puppi"
+      should contain_monitor__process('munin_process').with(
+        'tool' => 'puppi'
+      )
     end
   end
 
@@ -161,8 +166,9 @@ describe 'munin' do
     let(:params) { {:firewall => true, :firewall_tool => "iptables" , :protocol => "tcp" , :port => "42" } }
 
     it 'should generate correct firewall define' do
-      content = catalogue.resource('firewall', 'munin_tcp_42').send(:parameters)[:tool]
-      content.should == "iptables"
+      should contain_firewall('munin_tcp_42').with(
+        'tool' => 'iptables'
+      )
     end
   end
 
@@ -170,16 +176,19 @@ describe 'munin' do
     let(:params) { {:monitor => "yes" , :monitor_tool => "puppi" , :firewall => "yes" , :firewall_tool => "iptables" , :puppi => "yes" , :port => "42" , :protocol => 'tcp' } }
 
     it 'should generate monitor resources' do
-      content = catalogue.resource('monitor::process', 'munin_process').send(:parameters)[:tool]
-      content.should == "puppi"
+      should contain_monitor__process('munin_process').with(
+        'tool' => 'puppi'
+      )
     end
     it 'should generate firewall resources' do
-      content = catalogue.resource('firewall', 'munin_tcp_42').send(:parameters)[:tool]
-      content.should == "iptables"
+      should contain_firewall('munin_tcp_42').with(
+        'tool' => 'iptables'
+      )
     end
     it 'should generate puppi resources ' do 
-      content = catalogue.resource('puppi::ze', 'munin').send(:parameters)[:ensure]
-      content.should == "present"
+      should contain_puppi__ze('munin').with(
+        'ensure' => 'present'
+      )
     end
   end
 
@@ -188,8 +197,9 @@ describe 'munin' do
     let(:params) { { :port => '42' } }
 
     it 'should honour top scope global vars' do
-      content = catalogue.resource('monitor::process', 'munin_process').send(:parameters)[:enable]
-      content.should == true
+      should contain_monitor__process('munin_process').with(
+        'enable' => 'true'
+      )
     end
   end
 
@@ -198,8 +208,9 @@ describe 'munin' do
     let(:params) { { :port => '42' } }
 
     it 'should honour module specific vars' do
-      content = catalogue.resource('monitor::process', 'munin_process').send(:parameters)[:enable]
-      content.should == true
+      should contain_monitor__process('munin_process').with(
+        'enable' => 'true'
+      )
     end
   end
 
@@ -208,8 +219,9 @@ describe 'munin' do
     let(:params) { { :port => '42' } }
 
     it 'should honour top scope module specific over global vars' do
-      content = catalogue.resource('monitor::process', 'munin_process').send(:parameters)[:enable]
-      content.should == true
+      should contain_monitor__process('munin_process').with(
+        'enable' => 'true'
+      )
     end
   end
 
@@ -218,8 +230,9 @@ describe 'munin' do
     let(:params) { { :monitor => true , :firewall => true, :port => '42' } }
 
     it 'should honour passed params over global vars' do
-      content = catalogue.resource('monitor::process', 'munin_process').send(:parameters)[:enable]
-      content.should == true
+      should contain_monitor__process('munin_process').with(
+        'enable' => 'true'
+      )
     end
   end
 
