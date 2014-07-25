@@ -33,7 +33,7 @@ define munin::plugin (
   $enable         = true ) {
 
   $ensure = bool2ensure($enable)
-  
+
   include munin
 
   if $source {
