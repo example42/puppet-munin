@@ -288,6 +288,7 @@ class munin (
   $graph_period        = params_lookup( 'graph_period' ),
   $autoconfigure       = params_lookup( 'autoconfigure' ),
   $autoconfigure_template = params_lookup( 'autoconfigure_template' ),
+  $autoconfigure_file  = params_lookup( 'autoconfigure_file' ),
   $restart_or_reload   = params_lookup( 'restart_or_reload' ),
   $package_perlcidr    = params_lookup( 'package_perlcidr' ),
   $package_server      = params_lookup( 'package_server' ),
@@ -459,14 +460,24 @@ class munin (
   if $munin::bool_autoconfigure == true {
     file { 'munin-autoconfigure':
       ensure  => $munin::manage_file,
-      path    => '/etc/cron.daily/munin-autoconfigure',
+      path    => $munin::autoconfigure_file,
       mode    => '0755',
-      owner   => 'root',
-      group   => 'root',
+      owner   => $munin::config_file_owner,
+      group   => $munin::config_file_group,
       require => Package['munin-node'],
       content => template($munin::autoconfigure_template),
       replace => $munin::manage_file_replace,
       audit   => $munin::manage_audit,
+    }
+    if $::operatingsystem == 'OpenBSD' {
+      cron { 'munin-autoconfigure':
+        ensure  => $munin::manage_file,
+        command => $munin::autoconfigure_file,
+        user    => 'root',
+        minute  => '31',
+        hour    => '1',
+        audit   => $munin::manage_audit,
+      }
     }
   }
 

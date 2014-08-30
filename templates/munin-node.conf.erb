@@ -8,7 +8,7 @@ background 1
 setsid 1
 
 user root
-group root
+group <%= @config_file_group %>
 
 # Regexps for files to ignore
 ignore_file ~$

@@ -22,7 +22,14 @@ class munin::params {
   $grouplogic = ''
   $extra_plugins = false
   $autoconfigure = true
-  $autoconfigure_template = 'munin/munin-autoconfigure.erb'
+  $autoconfigure_template = $::operatingsystem ? {
+    /(?i:OpenBSD)/ => 'munin/munin-autoconfigure-openbsd.erb',
+    default        => 'munin/munin-autoconfigure.erb',
+  }
+  $autoconfigure_file = $::operatingsystem ? {
+    /(?i:OpenBSD)/ => '/usr/local/sbin/munin-autoconfigure',
+    default        => '/etc/cron.daily/munin-autoconfigure',
+  }
   $graph_strategy = 'cron'
   $graph_period = 'second'
 
@@ -31,11 +38,13 @@ class munin::params {
       4        => 'perl-Net-CIDR-Lite',
       default  => 'perl-Net-CIDR',
     },
-    default => 'libnet-cidr-perl',
+    /(?i:OpenBSD)/                               => 'p5-Net-CIDR',
+    default                                      => 'libnet-cidr-perl',
   }
 
   $package_server = $::operatingsystem ? {
-    default => 'munin',
+    /(?i:OpenBSD)/ => 'munin-server',
+    default        => 'munin',
   }
 
   $config_file_server = '/etc/munin/munin.conf'
@@ -70,7 +79,8 @@ class munin::params {
   }
 
   $service = $::operatingsystem ? {
-    default => 'munin-node',
+    /(?i:OpenBSD)/ => 'munin_node',
+    default        => 'munin-node',
   }
 
   $service_status = $::operatingsystem ? {
@@ -114,7 +124,8 @@ class munin::params {
   }
 
   $config_file_group = $::operatingsystem ? {
-    default => 'root',
+    /(?i:OpenBSD)/ => 'wheel',
+    default        => 'root',
   }
 
   $config_file_init = $::operatingsystem ? {
@@ -143,6 +154,7 @@ class munin::params {
   # }
   $log_file = $::operatingsystem ? {
     /(?i:RedHat|Centos|Scientific|Fedora|Amazon|Linux)/ => '/var/log/munin-node/munin-node.log',
+    /(?i:OpenBSD)/                                      => '/var/log/munin/munin-node.log',
     default                                             => '/var/log/munin/munin.log',
   }
 
