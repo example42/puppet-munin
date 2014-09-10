@@ -34,6 +34,8 @@ define munin::plugin (
 
   $ensure = bool2ensure($enable)
 
+  include munin
+
   if $source {
     file { "Munin_plugin_${name}":
       ensure  => $ensure,
