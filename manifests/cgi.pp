@@ -9,7 +9,9 @@
 class munin::cgi (
   $fcgi_runlevels   = params_lookup('fcgi_runlevels'),
   $fcgi_command     = params_lookup('fcgi_command'),
-  $fcgi_reload_init = params_lookup('fcgi_reload_init'),) inherits munin {
+  $fcgi_reload_init = params_lookup('fcgi_reload_init'),
+  ) inherits munin {
+
   if !defined(Package['spawn-fcgi']) {
     package { 'spawn-fcgi': ensure => $munin::manage_file; }
   }
@@ -19,14 +21,14 @@ class munin::cgi (
     runlevel => $munin::cgi::fcgi_runlevels,
     action   => 'respawn',
     command  => $munin::cgi::fcgi_command,
-    require  => Package['spawn-fcgi'];
+    require  => Package['spawn-fcgi'],
   }
 
   if $fcgi_reload_init {
     exec { 'munin::cgi::reload inittab':
       command     => '/sbin/init q',
       refreshonly => true,
-      subscribe   => Inittab['mufc'];
+      subscribe   => Inittab['mufc'],
     }
   }
 }
