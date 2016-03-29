@@ -37,7 +37,7 @@ class munin::server inherits munin {
   }
 
   if $munin::bool_include_dir_purge {
-    File ['munin.include_dir_server'] {
+    File['munin.include_dir_server'] {
       source => 'puppet:///modules/munin/empty',
       ignore => ['.gitkeep'],
       recurse => true,
