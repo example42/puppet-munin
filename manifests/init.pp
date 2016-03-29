@@ -496,12 +496,12 @@ class munin (
   }
 
   service { 'munin-node':
-    ensure     => $munin::manage_service_ensure,
-    name       => $munin::service,
-    enable     => $munin::manage_service_enable,
-    hasstatus  => $munin::service_status,
-    pattern    => $munin::process,
-    require    => Package['munin-node'],
+    ensure    => $munin::manage_service_ensure,
+    name      => $munin::service,
+    enable    => $munin::manage_service_enable,
+    hasstatus => $munin::service_status,
+    pattern   => $munin::process,
+    require   => Package['munin-node'],
   }
 
   file { 'munin-node.conf':
